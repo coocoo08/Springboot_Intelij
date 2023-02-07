@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="~{/layout/basic :: setContent(~{this::content} )}">
+
+    <th:block th:fragment="content">
+
+        <h1 class="mt-4">GuestBook Read Page</h1>
+        <form action="/guestbook/modify" method="post">
+            <div class="form-group">
+                <label>Gno</label>
+                <input type="text" class="form-control" name="gno" th:value="${dto.gno}" readonly>
+            </div>
+
+            <div class="form-group">
+                <label>Title</label>
+                <input type="text" class="form-control" name="title" th:value="${dto.title}">
+            </div>
+
+            <div class="form-group">
+                <label>Content</label>
+                <textarea class="form-control" rows="5" name="content">[[${dto.content}]]</textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Writer</label>
+                <input type="text" class="form-control" name="writer" th:value="${dto.writer}" readonly>
+            </div>
+
+            <div class="form-group">
+                <label>RegDate</label>
+                <input type="text" class="form-control" name="regDate"
+                       th:value="${#temporals.format(dto.regDate, 'yyyy/MM/dd HH:mm:ss')}" readonly>
+            </div>
+
+            <div class="form-group">
+                <label>ModDate</label>
+                <input type="text" class="form-control" name="modDate"
+                       th:value="${#temporals.format(dto.modDate, 'yyyy/MM/dd HH:mm:ss')}" readonly>
+            </div>
+        </form>
+
+            <button type="button" class="btn btn-primary">Modify</button>
+            <button type="button" class="btn btn-info">List</button>
+            <button type="button" class="btn btn-danger removeBtn">Remove</button>
+        <script th:inline="javascript">
+            var actionForm = $("form"); //form 태그 객체
+            $(".removeBtn").click(function(){
+                actionForm.attr("action", "/guestbook/remove").attr("method", "post");
+                actionForm.submit();
+            });
+        </script>
+    </th:block>
+
+</th:block>
+
+</html>
