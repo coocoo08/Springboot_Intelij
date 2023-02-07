@@ -45,6 +45,6 @@ public class GuestbookController {
         // 새로 추가된 엔티티의 번호
         Long gno = service.register(dto);
         redirectAttributes.addFlashAttribute("msg", gno);
-        return "/redirect:/guestbook/list";
+        return "redirect:/guestbook/list";
     }
 }
