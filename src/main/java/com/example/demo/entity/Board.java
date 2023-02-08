@@ -2,17 +2,14 @@ package com.example.demo.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@ToString
+@ToString(exclude = "writer")   // @ToString은 항상 exclude
 public class Board extends BaseEntity{
 
     @Id
@@ -20,5 +17,7 @@ public class Board extends BaseEntity{
     private Long bno;
     private String title;
     private String content;
-    // 작성자는 아직 처리하지 않음
+
+    @ManyToOne(fetch = FetchType.LAZY) // 명시적으로 Lazy 로딩 지정
+    private Member writer; // 연관관계 지정
 }
