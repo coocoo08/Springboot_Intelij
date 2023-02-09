@@ -3,8 +3,7 @@ package com.example.demo.service.serviceimpl;
 import com.example.demo.dto.BoardDTO;
 import com.example.demo.dto.PageRequestDTO;
 import com.example.demo.dto.PageResultDTO;
-import com.example.demo.entity.Board;
-import com.example.demo.entity.Member;
+import com.example.demo.entity.*;
 import com.example.demo.repository.BoardRepository;
 import com.example.demo.repository.ReplyRepository;
 import com.example.demo.service.BoardService;
@@ -60,5 +59,16 @@ public class BoardServiceImpl implements BoardService {
         // 댓글부터 삭제
         replyRepository.deleteByBno(bno);
         repository.deleteById(bno);
+    }
+
+    @Transactional
+    @Override
+    public void modify(BoardDTO boardDTO) {
+
+       Board board = repository.getOne(boardDTO.getBno());
+       board.changeTitle(boardDTO.getTitle());
+       board.changeContent(boardDTO.getContent());
+
+       repository.save(board);
     }
 }

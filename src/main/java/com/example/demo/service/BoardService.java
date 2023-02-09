@@ -15,6 +15,8 @@ public interface BoardService {
 
     void removeWithReplies(Long bno); // 삭제 기능
 
+    void modify(BoardDTO boardDTO); // 게시물 수정
+
     default Board  dtoToEntity(BoardDTO dto){
         Member member = Member.builder().email(dto.getWriterEmail()).build();
 

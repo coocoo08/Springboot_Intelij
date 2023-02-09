@@ -3,11 +3,10 @@ package com.example.demo.service;
 import com.example.demo.dto.BoardDTO;
 import com.example.demo.dto.PageRequestDTO;
 import com.example.demo.dto.PageResultDTO;
-import com.example.demo.entity.Board;
-import com.example.demo.repository.ReplyRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 public class BoardServiceTests {
@@ -48,5 +47,17 @@ public class BoardServiceTests {
     public void restRemove(){
         Long bno = 1L;
         boardService.removeWithReplies(bno);
+    }
+
+    @Test
+    public void testModify() {
+
+        BoardDTO boardDTO = BoardDTO.builder()
+                .bno(12L)
+                .title("제목 변경합니다.")
+                .content("내용 변경합니다.")
+                .build();
+
+        boardService.modify(boardDTO);
     }
 }
