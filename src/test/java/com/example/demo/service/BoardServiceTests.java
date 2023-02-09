@@ -1,6 +1,8 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.BoardDTO;
+import com.example.demo.dto.PageRequestDTO;
+import com.example.demo.dto.PageResultDTO;
 import com.example.demo.entity.Board;
 import com.example.demo.repository.ReplyRepository;
 import org.junit.jupiter.api.Test;
@@ -23,5 +25,14 @@ public class BoardServiceTests {
                 .build();
 
         Long bno = boardService.register(dto);
+    }
+
+    @Test
+    public void testList(){
+        PageRequestDTO pageRequestDTO = new PageRequestDTO();
+        PageResultDTO<BoardDTO, Object[]> result = boardService.getList(pageRequestDTO);
+        for (BoardDTO boardDTO : result.getDtoList()){
+            System.out.println(boardDTO);
+        }
     }
 }
