@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.dto.BoardDTO;
 import com.example.demo.dto.PageRequestDTO;
 import com.example.demo.dto.PageResultDTO;
+import com.example.demo.repository.BoardRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,6 +14,8 @@ public class BoardServiceTests {
 
     @Autowired
     private BoardService boardService;
+    @Autowired
+    private BoardRepository boardRepository;
 
     @Test
     public void restRegister(){
@@ -59,5 +62,10 @@ public class BoardServiceTests {
                 .build();
 
         boardService.modify(boardDTO);
+    }
+
+    @Test
+    public void testSearch1(){
+        boardRepository.search1();
     }
 }
