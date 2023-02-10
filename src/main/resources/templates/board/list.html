@@ -5,7 +5,7 @@
 
     <th:block th:fragment="content">
 
-        <h1 class="mt-4">GuestBook List Page
+        <h1 class="mt-4">Board List Page
             <span>
                 <a th:href="@{/board/register}">
                     <button type="button" class="btn btn-outline-primary">Register</button>
@@ -50,7 +50,7 @@
                     <a th:href="@{/board/read(bno=${dto.bno}, page=${result.page}, type=${pageRequestDTO.type}, keyword=${pageRequestDTO.keyword})}">[[${dto.bno}]]</a>
                 </th>
                 <td>[[${dto.title}]] -------------------------[<b th:text="${dto.replyCount}"></b>]</td>
-                <td>[[${dto.writerName}]]<small>[[${dto.writerEmail}]]</small></td>
+                <td>[[${dto.writerName}]](<small>[[${dto.writerEmail}]]</small>)</td>
                 <td>[[${#temporals.format(dto.regDate,'yyyy/MM/dd')}]]</td>
             </tr>
             </tbody>
