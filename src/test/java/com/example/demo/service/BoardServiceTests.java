@@ -64,8 +64,4 @@ public class BoardServiceTests {
         boardService.modify(boardDTO);
     }
 
-    @Test
-    public void testSearch1(){
-        boardRepository.search1();
-    }
 }
