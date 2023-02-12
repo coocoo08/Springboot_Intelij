@@ -1,5 +1,8 @@
 package com.example.demo.repository.search;
 
+import com.example.demo.dto.BoardDTO;
+import com.example.demo.dto.PageRequestDTO;
+import com.example.demo.dto.PageResultDTO;
 import com.example.demo.entity.Board;
 import com.example.demo.entity.QBoard;
 import com.example.demo.entity.QMember;
@@ -121,4 +124,5 @@ public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport impleme
         log.info("COUNT : " + count);
         return new PageImpl<Object[]>(result.stream().map(t -> t.toArray()).collect(Collectors.toList()), pageable, count);
     }
+
 }
