@@ -1,45 +1,102 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <th:block th:replace="~{/layout/basic :: setContent(~{this::content} )}">
 
     <th:block th:fragment="content">
 
         <h1 class="mt-4">Board Read Page</h1>
 
-            <div class="form-group">
-                <label>Bno</label>
-                <input type="text" class="form-control" name="bno" th:value="${dto.bno}" readonly>
+        <div class="form-group">
+            <label>Bno</label>
+            <input type="text" class="form-control" name="bno" th:value="${dto.bno}" readonly>
+        </div>
+
+        <div class="form-group">
+            <label>Title</label>
+            <input type="text" class="form-control" name="title" th:value="${dto.title}" readonly>
+        </div>
+
+        <div class="form-group">
+            <label>Content</label>
+            <textarea class="form-control" rows="5" name="content" readonly>[[${dto.content}]]</textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Writer</label>
+            <input type="text" class="form-control" name="writer" th:value="${dto.writerName}" readonly>
+        </div>
+
+        <div class="form-group">
+            <label>RegDate</label>
+            <input type="text" class="form-control" name="regDate"
+                   th:value="${#temporals.format(dto.regDate, 'yyyy/MM/dd HH:mm:ss')}" readonly>
+        </div>
+
+        <div class="form-group">
+            <label>ModDate</label>
+            <input type="text" class="form-control" name="modDate"
+                   th:value="${#temporals.format(dto.modDate, 'yyyy/MM/dd HH:mm:ss')}" readonly>
+        </div>
+        <div class="mt-2">
+            <a th:href="@{/board/modify(bno=${dto.bno}, page=${requestDTO.page}, type=${requestDTO.type}, keyword=${requestDTO.keyword})}">
+                <button type="button" class="btn btn-primary">Modify</button>
+            </a>
+            <a th:href="@{/board/list(page=${requestDTO.page}, type=${requestDTO.type}, keyword=${requestDTO.keyword})}">
+                <button type="button" class="btn btn-info">List</button>
+            </a>
+        </div>
+        <div>
+            <div class="mt-4">
+                <h5><span class="badge badge-secondary replyCount"> Reply Count [[${dto.replyCount}]]</span></h5>
             </div>
+            <div class="list-group replyList"></div>
+        </div>
+        <script th:inline="javascript">
+            $(document).ready(function(){
+                var bno = [[${dto.bno}]];
+                var listGroup = $(".replyList"); // 댓글이 추가될 영역
 
-            <div class="form-group">
-                <label>Title</label>
-                <input type="text" class="form-control" name="title" th:value="${dto.title}" readonly>
-            </div>
+                // 날짜 처리를 위한 함수
+                function formatTime(str){
+                    var date = new Date(str);
 
-            <div class="form-group">
-                <label>Content</label>
-                <textarea class="form-control" rows="5" name="content" readonly>[[${dto.content}]]</textarea>
-            </div>
+                    return date.getFullYear() + '/' +
+                        (date.getMonth() + 1) + '/' +
+                        date.getDate() + ' ' +
+                        date.getHours() + ':' +
+                        date.getMinutes();
+                }
 
-            <div class="form-group">
-                <label>Writer</label>
-                <input type="text" class="form-control" name="writer" th:value="${dto.writerName}" readonly>
-            </div>
+                // 특정한 게시글의 댓글을 처리하는 함수
+                function loadJSONData() {
+                    $.getJSON('/replies/board/'+bno, function(arr){
+                        console.log(arr);
 
-            <div class="form-group">
-                <label>RegDate</label>
-                <input type="text" class="form-control" name="regDate" th:value="${#temporals.format(dto.regDate, 'yyyy/MM/dd HH:mm:ss')}" readonly>
-            </div>
+                        var str = "";
 
-            <div class="form-group">
-                <label>ModDate</label>
-                <input type="text" class="form-control" name="modDate" th:value="${#temporals.format(dto.modDate, 'yyyy/MM/dd HH:mm:ss')}" readonly>
-            </div>
+                        $('.replyCount').html(" Reply Count " + arr.length);
 
-            <a th:href="@{/board/modify(bno=${dto.bno}, page=${requestDTO.page}, type=${requestDTO.type}, keyword=${requestDTO.keyword})}"><button type="button" class="btn btn-primary">Modify</button></a>
-            <a th:href="@{/board/list(page=${requestDTO.page}, type=${requestDTO.type}, keyword=${requestDTO.keyword})}"><button type="button" class="btn btn-info">List</button></a>
+                        $.each(arr, function(idx, reply){
+                            console.log(reply);
+                            str += ' <div class="card-body" data-rno="' + reply.rno + '"><b>' + reply.rno + '</b>';
+                            str += ' <h5 class="card-title">' + reply.text + '</h5>';
+                            str += ' <h6 class="card-subtitle mb-2 text-muted">' + reply.replyer + '</h6>';
+                            str += ' <p class="card-text">' + formatTime(reply.regDate) + '</p>';
+                            str += ' </div>';
+                            })
+                            listGroup.html(str);
+                    }); // end getJSON
+                }
 
+                $(".replyCount").click(function(){
+                    loadJSONData();
+                    $.getJSON('/replies/board/'+bno, function(arr){
+                        console.log(arr);
+                    }) // end getJSON
+                }) // end click
+            });
+        </script>
     </th:block>
 
 </th:block>
