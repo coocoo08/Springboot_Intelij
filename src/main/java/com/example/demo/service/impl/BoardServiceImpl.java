@@ -1,4 +1,4 @@
-package com.example.demo.service.serviceimpl;
+package com.example.demo.service.impl;
 
 import com.example.demo.dto.BoardDTO;
 import com.example.demo.dto.PageRequestDTO;
