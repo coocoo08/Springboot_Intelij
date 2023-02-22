@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <input name="uploadFiles" type="file" multiple>
+    <button class="uploadBtn">Upload</button>
+
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+    <script>
+        $('.uploadBtn').click(function(){
+           var formData = new FormData();
+           var inputFile = $("input[type='file']");
+           var files = inputFile[0].files;
+
+           for (var i = 0; i < files.length; i++){
+            console.log(files[i]);
+            formData.append("uploadFiles", files[i]);
+           }
+        });
+    </script>
+</body>
+</html>
