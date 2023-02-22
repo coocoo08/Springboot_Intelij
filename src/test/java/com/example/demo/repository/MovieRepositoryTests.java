@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Column;
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.IntStream;
 
@@ -54,6 +55,17 @@ public class MovieRepositoryTests {
 
         for (Object[] objects : result.getContent()){
             System.out.println(Arrays.toString(objects));
+        }
+    }
+
+    @Test
+    public void testGetMovieWithAll(){
+        List<Object[]> result = movieRepository.getMovieWithAll(96L);
+
+        System.out.println(result);
+
+        for (Object[] arr : result){
+            System.out.println(Arrays.toString(arr));
         }
     }
 }
