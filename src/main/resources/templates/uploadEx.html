@@ -20,6 +20,24 @@
             console.log(files[i]);
             formData.append("uploadFiles", files[i]);
            }
+
+           // 실제 업로드 부분
+           // upload ajax
+           $.ajax({
+                url: '/uploadAjax',
+                processData: false,
+                contentType: false,
+                data: formData,
+                type: 'POST',
+                dataType: 'json',
+                success: function(result){
+                    console.log(result);
+                    // 나중에 화면 처리
+                },
+                error: function(jqXHR, textStatus, errorThrown){
+                    console.log(textStatus);
+                }
+           }); // $.ajax
         });
     </script>
 </body>
