@@ -45,6 +45,8 @@ dependencies {
 	// querydsl
 	implementation "com.querydsl:querydsl-jpa:5.0.0"
 	implementation "com.querydsl:querydsl-apt:5.0.0"
+	// Thumbnailator
+	implementation group: 'net.coobird', name: 'thumbnailator', version: '0.4.19'
 }
 
 tasks.named('test') {
