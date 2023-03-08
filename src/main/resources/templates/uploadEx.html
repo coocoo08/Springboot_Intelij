@@ -43,14 +43,36 @@
            }); // $.ajax
         });
 
+        $(".uploadResult").on("click", ".removeBtn", function(e){
+
+            var target = $(this);
+            var fileName = target.data("name");
+            var targetDiv = $(this).closest("div");
+
+            console.log(fileName);
+
+            $.post('/removeFile', {fileName : fileName}, function(result){
+                console.log(result);
+                if(result === true){
+                    targetDiv.remove();
+                }
+            });
+        });
+
         function showUploadedImages(arr){
             console.log(arr);
 
             var divArea = $(".uploadResult");
 
+            var str = "";
+
             for(var i = 0; i < arr.length; i++){
-                divArea.append("<img src='display?fileName=" + arr[i].imageURL + "'>");
+                str += "<div>";
+                str += "<img src='display?fileName=" + arr[i].thumbnailURL + "'>";
+                str += "<button class='removeBtn' data-name='" + arr[i].imageURL + "'>REMOVE</button>";
+                str += "</div>";
             }
+            divArea.append(str);
         }
     </script>
 </body>
