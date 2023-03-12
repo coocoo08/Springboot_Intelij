@@ -16,8 +16,8 @@
             <div class="input-group mb-3 fileForm">
                 <label>Image Files</label>
                 <div class="input-group mb-3">
-                    <input type="file" class="form-control files" id="fileInput" multiple>
-                    <label class="input-group-text" data-browse="Browse">Browse</label>
+                    <input type="file" class="form-control files custom-file-input" id="fileInput" multiple>
+                    <label class="input-group-text custom-file-label" data-browse="Browse">Browse</label>
                 </div>
             </div>
 
@@ -28,7 +28,65 @@
 
         <script>
             $(document).ready(function(e){
+                var regex = new RegExp("(.*?)\.(exp|sh|zip|alz|tiff)$");
+                var maxSize = 10485760; // 10MB
 
+                function checkExtension(fileName, fileSize){
+                    if(fileSize >= maxSize){
+                        alert("파일 사이즈 초과");
+                        return false;
+                    }
+
+                    if(regex.test(fileName)){
+                        alert("해당 종류의 파일은 업로드 할 수 없습니다.");
+                        return false;
+                    }
+                    return true;
+                }
+
+                $(".custom-file-input").on("change", function(){
+
+                    var fileName = $(this).val().split("\\").pop();
+                    $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+
+                    var formData = new FormData();
+                    var inputFile = $(this);
+                    var files = inputFile[0].files;
+                    var appended = false;
+
+                    for(var i = 0; i < files.length; i++){
+                        if(!checkExtension(files[i].name, files[i].size)){
+                            return false;
+                        }
+                        console.log(files[i]);
+                        formData.append("uploadFiles", files[i]);
+                        appended = true;
+                    }
+
+                    // upload를 하지 않는다.
+                    if(!appended) {return;}
+
+                    for(var value of formData.values()){
+                        console.log(value);
+                    }
+
+                    // 실제 업로드 부분
+                    // upload ajax
+                    $.ajax({
+                        url: '/uploadAjax',
+                        processDara : false,
+                        contentType : false,
+                        data : formData,
+                        type : 'POST',
+                        dataType : 'json',
+                        success : function(result){
+                            console.log(result);
+                        },
+                        error : function(jqXHR, textStatus, errorThrown){
+                            console.log(textStatus);
+                        }
+                    }); // $.ajax
+                }); // end change event
             }); // document ready
         </script>
 
